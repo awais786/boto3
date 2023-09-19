@@ -629,8 +629,7 @@ def upload_fileobj(
     if config is None:
         config = TransferConfig()
 
-    if ExtraArgs and ExtraArgs.get('ACL') == 'public-read':
-        log.info('boto3 uploading object for bucket [%s], having key [%s]', Bucket, Key)
+    log.info('boto3 uploading object for bucket [%s], having key [%s] with ACL [%s]', Bucket, Key, ExtraArgs.get('ACL'))
 
     with create_transfer_manager(self, config) as manager:
         future = manager.upload(
