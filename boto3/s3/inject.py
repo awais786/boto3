@@ -10,6 +10,8 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
+import logging
+
 from botocore.exceptions import ClientError
 
 from boto3 import utils
@@ -19,6 +21,8 @@ from boto3.s3.transfer import (
     TransferConfig,
     create_transfer_manager,
 )
+
+log = logging.getLogger(__name__)
 
 
 def inject_s3_transfer_methods(class_attributes, **kwargs):
@@ -624,6 +628,8 @@ def upload_fileobj(
     config = Config
     if config is None:
         config = TransferConfig()
+
+    log.info('boto3 uploading object for bucket [%s], having key [%s] with ACL [%s]', Bucket, Key, ExtraArgs.get('ACL'))
 
     with create_transfer_manager(self, config) as manager:
         future = manager.upload(
